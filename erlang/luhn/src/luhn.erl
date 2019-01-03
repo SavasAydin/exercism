@@ -1,30 +1,26 @@
 -module(luhn).
--export([valid/1,
-	 create/1,
-	 test_version/0]).
+-export([valid/1]).
 
-create(String) ->
-    N = find_missing_number(String),
-    string:concat(String, N).
+valid(Str) ->
+    S = remove_spaces(Str),
+    valid_length(S) andalso all_digits(S) andalso check_sum(S) rem 10 == 0.
 
-valid(String) ->
-    check_sum(String) rem 10 == 0.
+remove_spaces(Str) ->
+    [X || X <- Str, X /= $\s].
 
-remove_spaces(String) ->
-    [ X || X <- String, X /= $\s ].
+valid_length(Str) ->
+    length(Str) > 1.
 
-find_missing_number(S) ->
-    N = check_sum(S ++ [$0]),
-    integer_to_list(10 - N rem 10).
+all_digits(Str) ->
+    lists:all(fun(X) -> X >= $0 andalso X =< $9 end, Str).
 
-check_sum(String) ->
-    S = remove_spaces(String),
-    Numbers = double_every_second(S),
+check_sum(Str) ->
+    Numbers = double_every_second(Str),
     lists:sum(Numbers).
 
-double_every_second(S) ->
-    WithIndices = lists:zip(lists:seq(1, length(S)), lists:reverse(S)),
-    [ double_even_indices(X) || X <- WithIndices ].
+double_every_second(Str) ->
+    Indices = lists:zip(lists:seq(1, length(Str)), lists:reverse(Str)),
+    [double_even_indices(X) || X <- Indices].
 
 double_even_indices({I, N}) when I rem 2 == 0 ->
     double(list_to_integer([N]));
@@ -35,6 +31,3 @@ double(N) when N > 4 ->
     N * 2 - 9;
 double(N) ->
     2 * N.
-
-test_version() ->
-    1.

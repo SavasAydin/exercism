@@ -1,12 +1,12 @@
 -module(word_count).
 -export([count/1,
-	 test_version/0]).
+         test_version/0]).
 
 count(Text) ->
     Lower = to_lower(Text),
     Clean = remove_special_characters(Lower),
     Words = tokenize(Clean),
-    count_occurrences(Words).
+    dict:from_list(count_occurrences(Words)).
 
 to_lower(Text) ->
     string:to_lower(Text).

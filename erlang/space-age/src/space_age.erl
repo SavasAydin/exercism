@@ -1,6 +1,5 @@
 -module(space_age).
--export([ageOn/2,
-	 test_version/0]).
+-export([age/2]).
 
 -define(EARTH_ORBITAL_PERIOD, 31557600).
 -define(MERCURY_ORBITAL_PERIOD, ?EARTH_ORBITAL_PERIOD * 0.2408467).
@@ -11,7 +10,7 @@
 -define(URANUS_ORBITAL_PERIOD, ?EARTH_ORBITAL_PERIOD * 84.016846).
 -define(NEPTUNE_ORBITAL_PERIOD, ?EARTH_ORBITAL_PERIOD * 164.79132).
 
-ageOn(Planet, SecondsOld) ->
+age(Planet, SecondsOld) ->
     OrbitalPeriod = get_orbital_period(Planet),
     SecondsOld / OrbitalPeriod.
 
@@ -27,6 +26,3 @@ orbital_periods() ->
      {saturn, ?SATURN_ORBITAL_PERIOD},
      {uranus, ?URANUS_ORBITAL_PERIOD},
      {neptune, ?NEPTUNE_ORBITAL_PERIOD}].
-
-test_version() ->
-    1.
